@@ -1,0 +1,66 @@
+package goconf_tests
+
+import (
+	"github.com/Yomiji/goconf"
+	"github.com/Yomiji/slog"
+	"os"
+	"testing"
+)
+
+type Database struct {
+	Server string
+	Ports []int
+	ConnectionMax int `toml:"connection_max"`
+	Enabled bool
+}
+type TomlConfig struct {
+	Database Database
+}
+type EnvConfig struct {
+	Path string
+	GoconfNum int `env:"GO_CONF_NUMBER"`
+	GoconfFloat32 float32 `env:"GO_CONF_FLOAT32"`
+	GoconfFloat64 float64 `env:"GO_CONF_FLOAT64"`
+}
+
+func TestMain(m *testing.M) {
+	// set env variables
+	if err:=os.Setenv("GO_CONF_NUMBER", "123"); err != nil {
+		slog.Info("Failed to set GO_CONF_NUMBER")
+	}
+	if err := os.Setenv("GO_CONF_FLOAT32", "12.3"); err != nil {
+		slog.Info("Failed to set GO_CONF_FLOAT32")
+	}
+	if err := os.Setenv("GO_CONF_FLOAT64", "12.3"); err != nil {
+		slog.Info("Failed to set GO_CONF_FLOAT64")
+	}
+
+	slog.ToggleLogging(true, true, true, true)
+
+	os.Exit(m.Run())
+}
+
+func TestToml(t *testing.T) {
+	conf := TomlConfig{}
+
+	err := goconf.FromToml("test.toml", &conf)
+	if err != nil {
+		t.Fatalf("Failed to load .toml file: %v\n", err)
+	}
+	if conf.Database.Server == "" || len(conf.Database.Ports) <= 0 || conf.Database.ConnectionMax == 0  ||
+		!conf.Database.Enabled {
+		t.Fatal("Failed due to data not read from file")
+	}
+}
+
+func TestEnv(t *testing.T) {
+	conf := EnvConfig{}
+
+	err := goconf.FromEnvironment(&conf)
+	if err != nil {
+		t.Fatalf("Failed to load from environment: %v\n", err)
+	}
+	if conf.Path == "" || conf.GoconfFloat32 == 0 || conf.GoconfFloat64 == 0 || conf.GoconfNum == 0 {
+		t.Fatal("Failed due to data not read from environment variables")
+	}
+}

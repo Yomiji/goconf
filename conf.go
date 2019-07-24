@@ -4,10 +4,7 @@ import (
 	"github.com/pelletier/go-toml"
 )
 
-
-type ConfigFile struct {}
-
-func (cfg ConfigFile) Load(fileName string, obj interface{}) error {
+func FromToml(fileName string, obj interface{}) error {
 	t,err := toml.LoadFile(fileName)
 	if err != nil {
 		return err
