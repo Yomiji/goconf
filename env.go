@@ -14,7 +14,7 @@ import (
 //
 // Struct tags like `env:"ENV_VAR"` will map the field to the ENV_VAR
 // environment variable
-func FromEnvironment(obj interface{}) error {
+func FromEnvironment(obj interface{}) (err error) {
 	if reflect.TypeOf(obj).Kind() != reflect.Ptr {
 		return errors.New("parameter must be pointer")
 	}
