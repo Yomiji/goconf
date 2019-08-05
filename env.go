@@ -8,8 +8,12 @@ import (
 	"strconv"
 )
 
-
-
+// Gets environment variables of type string, int, float32 or float64
+//
+// Environment variables are mapped to a struct passed as "obj"
+//
+// Struct tags like `env:"ENV_VAR"` will map the field to the ENV_VAR
+// environment variable
 func FromEnvironment(obj interface{}) error {
 	if reflect.TypeOf(obj).Kind() != reflect.Ptr {
 		return errors.New("parameter must be pointer")

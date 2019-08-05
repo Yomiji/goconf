@@ -3,6 +3,7 @@ package goconf_tests
 import (
 	"github.com/Yomiji/goconf"
 	"github.com/Yomiji/slog"
+	"io/ioutil"
 	"os"
 	"testing"
 )
@@ -40,7 +41,7 @@ func TestMain(m *testing.M) {
 	os.Exit(m.Run())
 }
 
-func TestToml(t *testing.T) {
+func TestFileToml(t *testing.T) {
 	conf := TomlConfig{}
 
 	err := goconf.FromToml("test.toml", &conf)
@@ -50,6 +51,41 @@ func TestToml(t *testing.T) {
 	if conf.Database.Server == "" || len(conf.Database.Ports) <= 0 || conf.Database.ConnectionMax == 0  ||
 		!conf.Database.Enabled {
 		t.Fatal("Failed due to data not read from file")
+	}
+}
+
+func TestByteToml(t *testing.T) {
+	conf := TomlConfig{}
+	f,err := os.Open("test.toml")
+	if err != nil {
+		t.Fatalf("Failed to load .toml file: %v\n", err)
+	}
+	all, err := ioutil.ReadAll(f)
+	if err != nil {
+		t.Fatalf("Failed to read .toml file: %v\n", err)
+	}
+	err = goconf.FromTomlBytes(all, &conf)
+	if err != nil {
+		t.Fatalf("Failed to translate .toml file: %v\n", err)
+	}
+	if conf.Database.Server == "" || len(conf.Database.Ports) <= 0 || conf.Database.ConnectionMax == 0  ||
+		!conf.Database.Enabled {
+		t.Fatalf("Failed due to data not read from file: %v", err)
+	}
+}
+func TestReaderToml(t *testing.T) {
+	conf := TomlConfig{}
+	f,err := os.Open("test.toml")
+	if err != nil {
+		t.Fatalf("Failed to load .toml file: %v\n", err)
+	}
+	err = goconf.FromTomlReader(f, &conf)
+	if err != nil {
+		t.Fatalf("Failed to translate .toml file: %v\n", err)
+	}
+	if conf.Database.Server == "" || len(conf.Database.Ports) <= 0 || conf.Database.ConnectionMax == 0  ||
+		!conf.Database.Enabled {
+		t.Fatalf("Failed due to data not read from file: %v", err)
 	}
 }
 

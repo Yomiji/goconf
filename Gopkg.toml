@@ -27,7 +27,7 @@
 
 [[constraint]]
   name = "github.com/Yomiji/slog"
-  version = "1.0.3"
+  version = "^1.0.3"
 
 [[constraint]]
   name = "github.com/pelletier/go-toml"
