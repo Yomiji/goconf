@@ -29,10 +29,6 @@
   name = "github.com/Yomiji/slog"
   version = "^1.0.3"
 
-[[constraint]]
-  name = "github.com/pelletier/go-toml"
-  version = "1.4.0"
-
 [prune]
   go-tests = true
   unused-packages = true

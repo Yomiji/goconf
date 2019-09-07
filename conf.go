@@ -1,7 +1,7 @@
 package goconf
 
 import (
-	"github.com/pelletier/go-toml"
+	"github.com/Yomiji/go-toml"
 	"io"
 )
 
