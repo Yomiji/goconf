@@ -28,8 +28,11 @@ type EnvConfig struct {
 func TestMain(m *testing.M) {
 
 	// set env variables
-	if err:=os.Setenv("Path", "some/path"); err != nil {
-		slog.Info("Failed to set Path")
+	if _, ok := os.LookupEnv("Path"); !ok {
+		err:=os.Setenv("Path", "some/path")
+		if err != nil {
+			slog.Info("Failed to set Path")
+		}
 	}
 	if err:=os.Setenv("GO_CONF_NUMBER", "123"); err != nil {
 		slog.Info("Failed to set GO_CONF_NUMBER")
