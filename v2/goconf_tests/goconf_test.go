@@ -5,7 +5,7 @@ import (
 	"os"
 	"testing"
 
-	"github.com/yomiji/goconf"
+	"github.com/yomiji/goconf/v2"
 	"github.com/yomiji/slog"
 )
 
@@ -26,7 +26,11 @@ type EnvConfig struct {
 }
 
 func TestMain(m *testing.M) {
+
 	// set env variables
+	if err:=os.Setenv("Path", "some/path"); err != nil {
+		slog.Info("Failed to set Path")
+	}
 	if err:=os.Setenv("GO_CONF_NUMBER", "123"); err != nil {
 		slog.Info("Failed to set GO_CONF_NUMBER")
 	}
