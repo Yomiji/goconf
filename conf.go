@@ -1,8 +1,9 @@
 package goconf
 
 import (
-	"github.com/Yomiji/go-toml"
 	"io"
+
+	"github.com/yomiji/go-toml"
 )
 
 func FromToml(fileName string, obj interface{}) error {

@@ -1,11 +1,12 @@
 package goconf_tests
 
 import (
-	"github.com/Yomiji/goconf"
-	"github.com/Yomiji/slog"
 	"io/ioutil"
 	"os"
 	"testing"
+
+	"github.com/yomiji/goconf"
+	"github.com/yomiji/slog"
 )
 
 type Database struct {

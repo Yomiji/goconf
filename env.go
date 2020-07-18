@@ -39,22 +39,22 @@ func FromEnvironment(obj interface{}) (err error) {
 		}
 		// depending on the type, convert the environment variable
 		switch fieldVal.Type().Kind() {
-	  case reflect.String:
-	  	fieldVal.Set(reflect.ValueOf(getEnv(fieldName)))
+		case reflect.String:
+			fieldVal.Set(reflect.ValueOf(getEnv(fieldName)))
 		case reflect.Int:
 			fieldVal.Set(reflect.ValueOf(getIntEnv(fieldName)))
 		case reflect.Float32:
 			fieldVal.Set(reflect.ValueOf(getFloat32Env(fieldName)))
 		case reflect.Float64:
 			fieldVal.Set(reflect.ValueOf(getFloat64Env(fieldName)))
-	  }
+		}
 	}
 	return nil
 }
 
-func  getFloat64Env(envVar string) interface{} {
+func getFloat64Env(envVar string) interface{} {
 	checkEnv(envVar)
-	f,err := strconv.ParseFloat(os.Getenv(envVar), 64)
+	f, err := strconv.ParseFloat(os.Getenv(envVar), 64)
 	if err != nil {
 		panic(err)
 	}
@@ -63,7 +63,7 @@ func  getFloat64Env(envVar string) interface{} {
 
 func getFloat32Env(envVar string) interface{} {
 	checkEnv(envVar)
-	f,err := strconv.ParseFloat(os.Getenv(envVar), 32)
+	f, err := strconv.ParseFloat(os.Getenv(envVar), 32)
 	if err != nil {
 		panic(err)
 	}
@@ -72,7 +72,7 @@ func getFloat32Env(envVar string) interface{} {
 
 func getIntEnv(envVar string) interface{} {
 	checkEnv(envVar)
-	i,err := strconv.Atoi(os.Getenv(envVar))
+	i, err := strconv.Atoi(os.Getenv(envVar))
 	if err != nil {
 		panic(err)
 	}
@@ -85,7 +85,7 @@ func getEnv(envVar string) string {
 }
 
 func checkEnv(env string) {
-	if _,ok := os.LookupEnv(env); !ok {
+	if _, ok := os.LookupEnv(env); !ok {
 		err := errors.New(fmt.Sprintf("%s environment variable not present", env))
 		panic(err)
 	}
