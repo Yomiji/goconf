@@ -1,4 +1,4 @@
-module github.com/yomiji/goconf/v2
+module github.com/yomiji/goconf
 
 go 1.12
 
