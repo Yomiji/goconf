@@ -2,30 +2,38 @@ package goconf
 
 import (
 	"io"
+	"os"
 
-	"github.com/yomiji/go-toml"
+	"github.com/pelletier/go-toml/v2"
 )
 
-func FromToml(fileName string, obj interface{}) error {
-	t, err := toml.LoadFile(fileName)
+func unmarshal(b []byte, obj interface{}) error {
+	err := toml.Unmarshal(b, obj)
 	if err != nil {
 		return err
 	}
-	return t.Unmarshal(obj)
+
+	return nil
+}
+
+func FromToml(fileName string, obj interface{}) error {
+	b, err := os.ReadFile(fileName)
+	if err != nil {
+		return err
+	}
+
+	return unmarshal(b, obj)
 }
 
 func FromTomlReader(reader io.Reader, obj interface{}) error {
-	t, err := toml.LoadReader(reader)
+	b, err := io.ReadAll(reader)
 	if err != nil {
 		return err
 	}
-	return t.Unmarshal(obj)
+
+	return unmarshal(b, obj)
 }
 
-func FromTomlBytes(bytes []byte, obj interface{}) error {
-	t, err := toml.LoadBytes(bytes)
-	if err != nil {
-		return err
-	}
-	return t.Unmarshal(obj)
+func FromTomlBytes(b []byte, obj interface{}) error {
+	return unmarshal(b, obj)
 }
